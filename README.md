@@ -1,2 +1,2 @@
 # node-hooks
-Node.js webhooks server
+A node.js webhooks server
