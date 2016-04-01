@@ -11,7 +11,7 @@ webhook.on('error', function (error) {
     console.log(error.message);
     console.log('error', error);
 
-    capsule.request({ path: '/party', search: 'email=ab@undercurrentnews.com' }, function(err, data) {
+    capsule.personByEmail('ab@undercurrentnews.com', function(err, data) {
         console.log('capsule err', err);
         console.log('capsule data', data);
     });
