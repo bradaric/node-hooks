@@ -10,7 +10,9 @@
         "url" : "http://github.com/bradaric/node-hooks.git"
     },
     "dependencies": {
-        "mailchimp": "bradaric/node-mailchimp"
+        "mailchimp": "bradaric/node-mailchimp",
+        "capsule-crm": "bradaric/capsule-crm",
+        "aws-sdk": "~2.2"
     },
     "devDependencies": {
     }
