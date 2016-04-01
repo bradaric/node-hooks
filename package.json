@@ -1,14 +1,20 @@
 {
     "name" : "node-hooks",
-    "version" : "0.0.1",
+    "version" : "0.0.2",
     "description" : "A node.js webhooks server.",
     "author" : "Alex Bradaric <alex@bradaric.com>",
-    "keywords" : ["webhooks", "mailchimp", "capsule"],
+    "keywords" : ["webhooks", "mailchimp", "capsule", "capsulecrm"],
     "main" : "./lib/hooks",
     "repository" : {
         "type" : "git",
         "url" : "http://github.com/bradaric/node-hooks.git"
     },
+    "contributors": [
+        {
+            "name": "Alex Bradaric",
+            "email": "alex@bradaric.com"
+        }
+    ],
     "dependencies": {
         "mailchimp": "bradaric/node-mailchimp",
         "capsule-crm": "bradaric/capsule-crm",
