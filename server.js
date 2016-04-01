@@ -10,18 +10,27 @@ var capsule = CapsuleCRM.createConnection(config.capsule.account, config.capsule
 webhook.on('error', function (error) {
     console.log(error.message);
     console.log('error', error);
-
-    capsule.personByEmail('ab@undercurrentnews.com', function(err, data) {
-        console.log('capsule err', err);
-        console.log('capsule data', data);
-    });
 });
 
 webhook.on('subscribe', function (data, meta) {
-    console.log(data.email + ' subscribed to your newsletter!');
+    var user_email = data.email;
+    console.log(user_email + ' subscribed to your newsletter!');
     console.log('data', data);
     console.log('GROUPINGS', data.merges.GROUPINGS);
     console.log('meta', meta);
+
+    capsule.personByEmail(user_email, function(err, data) {
+        console.log('personByEmail err', err);
+        console.log('personByEmail data', data);
+        if (typeof data.person.id !== 'undefined' && data.person.id) {
+            var note = { historyItem: { note: user_email + ' subscribed to your newsletter!' } };
+            capsule.addHistoryFor('party', data.person.id, note, function(err, data) {
+                console.log('addHistoryFor err', err);
+                console.log('addHistoryFor data', data);
+            });
+        }
+    });
+
 });
 webhook.on('unsubscribe', function (data, meta) {
     console.log(data.email + ' unsubscribed from your newsletter!');
