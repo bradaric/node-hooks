@@ -22,7 +22,7 @@ webhook.on('subscribe', function (data, meta) {
     capsule.personByEmail(user_email, function(err, data) {
         console.log('personByEmail err', err);
         console.log('personByEmail data', data);
-        if (typeof data.person.id !== 'undefined' && data.person.id) {
+        if (typeof data.person !== 'undefined' && data.person.id) {
             var note = { historyItem: { note: user_email + ' subscribed to your newsletter!' } };
             capsule.addHistoryFor('party', data.person.id, note, function(err, data) {
                 console.log('addHistoryFor err', err);
