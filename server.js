@@ -36,8 +36,16 @@
                 tag: tag_name,
                 label: tag_label
             };
-            if (segments.indexOf(tag_label) >= 0) {
-                field.boolean = true;
+
+            if (tag_label == 'unsubscribed') {
+                if (!segments.length) {
+                    field.boolean = true;
+                }
+            }
+            else {
+                if (segments.indexOf(tag_label) >= 0) {
+                    field.boolean = true;
+                }
             }
             fields.push(field);
         });
