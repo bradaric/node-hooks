@@ -71,7 +71,7 @@
                 var person_id = data.parties.person.id;
                 var mailing_list = config.mailchimp.lists[webhook_data.list_id];
 
-                var note = { historyItem: { creatorName: 'UCN', note: 'Contact has subscribed to mailing list "' + mailing_list.name + '"' } };
+                var note = { historyItem: { note: 'Contact has subscribed to mailing list "' + mailing_list.name + '"' } };
                 capsule.addHistoryFor('party', person_id, note, function(err, data) {
                     console.log('addHistoryFor err', err);
                     console.log('addHistoryFor data', data);
@@ -107,7 +107,7 @@
                 var person_id = data.parties.person.id;
                 var mailing_list = config.mailchimp.lists[webhook_data.list_id];
 
-                var note = { historyItem: { creatorName: 'UCN', note: 'Contact has unsubscribed from mailing list "' + mailing_list.name + '"' } };
+                var note = { historyItem: { note: 'Contact has unsubscribed from mailing list "' + mailing_list.name + '"' } };
                 capsule.addHistoryFor('party', person_id, note, function(err, data) {
                     console.log('addHistoryFor err', err);
                     console.log('addHistoryFor data', data);
@@ -144,7 +144,7 @@
                 var person_id = data.parties.person.id;
                 var mailing_list = config.mailchimp.lists[webhook_data.list_id];
 
-                var note = { historyItem: { creatorName: 'UCN', note: 'Contact has updated their preferences for mailing list "' + mailing_list.name + '"' } };
+                var note = { historyItem: { note: 'Contact has updated their preferences for mailing list "' + mailing_list.name + '"' } };
                 capsule.addHistoryFor('party', person_id, note, function(err, data) {
                     console.log('addHistoryFor err', err);
                     console.log('addHistoryFor data', data);
