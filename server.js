@@ -48,6 +48,7 @@
     });
 
     webhook.on('subscribe', function (data, meta) {
+        var mailing_list_id = data.list_id;
         console.log(data.email + ' subscribed to your newsletter!');
         console.log('data', data);
         console.log('GROUPINGS', data.merges.GROUPINGS);
@@ -58,7 +59,7 @@
             console.log('personByEmail data', data);
             if (typeof data.parties.person !== 'undefined' && data.parties.person.id) {
                 var person_id = data.parties.person.id;
-                var mailing_list = config.mailchimp.lists[data.list_id];
+                var mailing_list = config.mailchimp.lists[mailing_list_id];
 
                 var note = { historyItem: { note: 'Contact has subscribed to mailing list ' + mailing_list.name } };
                 capsule.addHistoryFor('party', person_id, note, function(err, data) {
