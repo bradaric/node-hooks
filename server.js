@@ -53,20 +53,18 @@
                 });
             }
 
-            if (segments.length) {
-                var tag_name = mailing_list.tag;
-                if (tag_name && config.capsule.datatags[tag_name]) {
-                    var tags = { customFields: { customField: _segmentsToFields(segments, tag_name) } };
-                    console.log('tags', tags);
-                    capsule.setCustomFieldFor('party', person_id, tags, function(err, custom_field_data) {
-                        console.log('setCustomFieldFor err', err);
-                        console.log('setCustomFieldFor data', custom_field_data);
-                        capsule.setPartyTag(person_id, tag_name, function(err, party_tag_data) {
-                            console.log('setPartyTag err', err);
-                            console.log('setPartyTag data', party_tag_data);
-                        });
+            var tag_name = mailing_list.tag;
+            if (tag_name && config.capsule.datatags[tag_name]) {
+                var tags = { customFields: { customField: _segmentsToFields(segments, tag_name) } };
+                console.log('tags', tags);
+                capsule.setCustomFieldFor('party', person_id, tags, function(err, custom_field_data) {
+                    console.log('setCustomFieldFor err', err);
+                    console.log('setCustomFieldFor data', custom_field_data);
+                    capsule.setPartyTag(person_id, tag_name, function(err, party_tag_data) {
+                        console.log('setPartyTag err', err);
+                        console.log('setPartyTag data', party_tag_data);
                     });
-                }
+                });
             }
         }
     };
@@ -90,14 +88,12 @@
 
     var _segmentsToFields = function(segments, tag_name) {
         var fields = [];
-        console.log('segments.length', segments.length);
         config.capsule.datatags[tag_name].forEach(function(tag_label) {
             var field = {
                 tag: tag_name,
                 label: tag_label
             };
 
-            console.log('tag_label', tag_label);
             if (tag_label == 'unsubscribed' && segments.length === 0) {
                 field.boolean = true;
             }
