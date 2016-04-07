@@ -96,14 +96,12 @@
                 label: tag_label
             };
 
-            if (segments.indexOf(tag_label) >= 0) {
+            if (tag_label == 'unsubscribed' && !segments.length) {
                 field.boolean = true;
             }
             else {
-                if (tag_label == 'unsubscribed') {
-                    if (!segments.length) {
-                        field.boolean = true;
-                    }
+                if (segments.indexOf(tag_label) >= 0) {
+                    field.boolean = true;
                 }
             }
             fields.push(field);
