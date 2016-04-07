@@ -90,13 +90,15 @@
 
     var _segmentsToFields = function(segments, tag_name) {
         var fields = [];
+        console.log('segments.length', segments.length);
         config.capsule.datatags[tag_name].forEach(function(tag_label) {
             var field = {
                 tag: tag_name,
                 label: tag_label
             };
 
-            if (tag_label == 'unsubscribed' && !segments.length) {
+            console.log('tag_label', tag_label);
+            if (tag_label == 'unsubscribed' && segments.length === 0) {
                 field.boolean = true;
             }
             else {
