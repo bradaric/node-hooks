@@ -14,7 +14,7 @@
 
     var _extractSegments = function(data) {
         var segments = [];
-        if (data && typeof data.merges !== 'undefined' && data.merges.GROUPINGS) {
+        if (typeof data.merges !== 'undefined' && data.merges.GROUPINGS) {
             data.merges.GROUPINGS.forEach(function(grouping) {
                 console.log('grouping', grouping);
                 if (grouping.groups) {
@@ -37,14 +37,14 @@
                 label: tag_label
             };
 
-            if (tag_label == 'unsubscribed') {
-                if (!segments.length) {
-                    field.boolean = true;
-                }
+            if (segments.indexOf(tag_label) >= 0) {
+                field.boolean = true;
             }
             else {
-                if (segments.indexOf(tag_label) >= 0) {
-                    field.boolean = true;
+                if (tag_label == 'unsubscribed') {
+                    if (!segments.length) {
+                        field.boolean = true;
+                    }
                 }
             }
             fields.push(field);
@@ -152,7 +152,7 @@
 
                 var tag_name = mailing_list.tag;
                 if (tag_name && config.capsule.datatags[tag_name]) {
-                    var tags = { customFields: { customField: _segmentsToFields(_extractSegments(webhook_data), tag_name) } };
+                    var tags = { customFields: { customField: _segmentsToFields([ 'unsubscribed' ], tag_name) } };
                     console.log('tags', tags);
                     capsule.setCustomFieldFor('party', person_id, tags, function(err, data) {
                         console.log('setCustomFieldFor err', err);
@@ -172,10 +172,40 @@
         console.log('meta', meta);
     });
     webhook.on('cleaned', function (data, meta) {
-        console.log(data.email + ' has been cleaned from your newsletter!');
-        console.log('data', data);
-        console.log('GROUPINGS', data.merges.GROUPINGS);
+        var webhook_data = data;
+        console.log(webhook_data.email + ' has been cleaned from your newsletter!');
+        console.log('webhook_data', webhook_data);
+        console.log('GROUPINGS', webhook_data.merges.GROUPINGS);
         console.log('meta', meta);
+
+        capsule.personByEmail(data.email, function(err, data) {
+            console.log('personByEmail err', err);
+            console.log('personByEmail data', data);
+            if (typeof data.parties.person !== 'undefined' && data.parties.person.id) {
+                var person_id = data.parties.person.id;
+                var mailing_list = config.mailchimp.lists[webhook_data.list_id];
+
+                var note = { historyItem: { note: 'Contact has been cleaned from mailing list "' + mailing_list.name + '"' } };
+                capsule.addHistoryFor('party', person_id, note, function(err, data) {
+                    console.log('addHistoryFor err', err);
+                    console.log('addHistoryFor data', data);
+                });
+
+                var tag_name = mailing_list.tag;
+                if (tag_name && config.capsule.datatags[tag_name]) {
+                    var tags = { customFields: { customField: _segmentsToFields([ 'cleaned' ], tag_name) } };
+                    console.log('tags', tags);
+                    capsule.setCustomFieldFor('party', person_id, tags, function(err, data) {
+                        console.log('setCustomFieldFor err', err);
+                        console.log('setCustomFieldFor data', data);
+                        capsule.setPartyTag(person_id, tag_name, function(err, data) {
+                            console.log('setPartyTag err', err);
+                            console.log('setPartyTag data', data);
+                        });
+                    });
+                }
+            }
+        });
     });
 
     webhook.on('campaign', function (data, meta) {

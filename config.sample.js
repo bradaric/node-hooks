@@ -39,7 +39,8 @@ config.capsule.datatags = {
         'Aquaculture',
         'People moves',
         'Breaking news',
-        'unsubscribed'
+        'unsubscribed',
+        'cleaned'
     ],
     'Mailchimp subscribers': [
         'Premium users',
@@ -52,7 +53,8 @@ config.capsule.datatags = {
         'Boston',
         'Conxemar',
         'Karen\'s list',
-        'unsubscribed'
+        'unsubscribed',
+        'cleaned'
     ]
 };
 
