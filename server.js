@@ -107,7 +107,7 @@
 
                 var tag_name = mailing_list.tag;
                 if (tag_name && config.capsule.datatags[tag_name]) {
-                    var tags = { customFields: { customField: _segmentsToFields(null, tag_name) } };
+                    var tags = { customFields: { customField: _segmentsToFields(_extractSegments(null), tag_name) } };
                     console.log('tags', tags);
                     capsule.setCustomFieldFor('party', person_id, tags, function(err, data) {
                         console.log('setCustomFieldFor err', err);
