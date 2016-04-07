@@ -1,6 +1,7 @@
 var config = {};
 
 config.webhook = {};
+config.mailchimp = {};
 config.capsule = {};
 
 // port   - The port the server is going to listen on. Defaults to 8100.
@@ -10,7 +11,47 @@ config.webhook.port = 8100;
 config.webhook.secret = '';
 config.webhook.secure = false;
 
-capsule.account = '';
-capsule.token = '';
+config.mailchimp.lists = {
+    '7d16b87512': {
+        name: 'Test News Alerts list',
+        tag: 'Mailchimp news alerts'
+    },
+    '3b90407bbe': {
+        name: 'Test User List',
+        tag: 'Mailchimp subscribers'
+    }
+};
+
+config.capsule.account = '';
+config.capsule.token = '';
+config.capsule.datatags = {
+    'Mailchimp news alerts': [
+        'Europe',
+        'Americas',
+        'Salmon',
+        'Latest jobs',
+        'Pelagics',
+        'Shrimp',
+        'Whitefish',
+        'Retail & foodservice',
+        'Fisheries',
+        'Tuna',
+        'Aquaculture',
+        'People moves',
+        'Breaking news'
+    ],
+    'Mailchimp subscribers': [
+        'Premium users',
+        'Standard users',
+        'Annual users',
+        'Monthly users',
+        'Group users',
+        'Free users',
+        'Brussels',
+        'Boston',
+        'Conxemar',
+        'Karen\'s list'
+    ]
+};
 
 module.exports = config;
