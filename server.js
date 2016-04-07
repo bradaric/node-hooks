@@ -14,7 +14,7 @@
 
     var _extractSegments = function(data) {
         var segments = [];
-        if (typeof data.merges !== 'undefined' && data.merges.GROUPINGS) {
+        if (data && typeof data.merges !== 'undefined' && data.merges.GROUPINGS) {
             data.merges.GROUPINGS.forEach(function(grouping) {
                 console.log('grouping', grouping);
                 if (grouping.groups) {
