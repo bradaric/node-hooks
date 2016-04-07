@@ -48,10 +48,10 @@
     });
 
     webhook.on('subscribe', function (data, meta) {
-        var mailing_list_id = data.list_id;
-        console.log(data.email + ' subscribed to your newsletter!');
-        console.log('data', data);
-        console.log('GROUPINGS', data.merges.GROUPINGS);
+        var webhook_data = data;
+        console.log(webhook_data.email + ' subscribed to your newsletter!');
+        console.log('webhook_data', webhook_data);
+        console.log('GROUPINGS', webhook_data.merges.GROUPINGS);
         console.log('meta', meta);
 
         capsule.personByEmail(data.email, function(err, data) {
@@ -59,7 +59,7 @@
             console.log('personByEmail data', data);
             if (typeof data.parties.person !== 'undefined' && data.parties.person.id) {
                 var person_id = data.parties.person.id;
-                var mailing_list = config.mailchimp.lists[mailing_list_id];
+                var mailing_list = config.mailchimp.lists[webhook_data.list_id];
 
                 var note = { historyItem: { note: 'Contact has subscribed to mailing list ' + mailing_list.name } };
                 capsule.addHistoryFor('party', person_id, note, function(err, data) {
@@ -69,7 +69,7 @@
 
                 var tag_name = mailing_list.tag;
                 if (tag_name && config.capsule.datatags[tag_name]) {
-                    var tags = { customFields: { customField: _segmentsToFields(_extractSegments(data), tag_name) } };
+                    var tags = { customFields: { customField: _segmentsToFields(_extractSegments(webhook_data), tag_name) } };
                     console.log('tags', tags);
                     capsule.setCustomFieldFor('party', person_id, tags, function(err, data) {
                         console.log('setCustomFieldFor err', err);
