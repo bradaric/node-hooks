@@ -147,7 +147,7 @@
         capsule.personByEmail(webhook_data.old_email, function(err, party_data) {
             console.log('[ upemail ] personByEmail err', err);
             if (!err) {
-                console.log('[ upemail ] personByEmail party_data', err);
+                console.log('[ upemail ] personByEmail party_data', party_data);
                 if (typeof party_data.parties.person !== 'undefined' && party_data.parties.person.id) {
                     var person_id = party_data.parties.person.id;
                     console.log('[ upemail ] person_id', person_id);
@@ -155,8 +155,10 @@
                     console.log('[ upemail ] mailing_list', mailing_list);
                     var update = {
                         person: {
-                            email: {
-                                emailAddress: webhook_data.new_email
+                            contacts: {
+                                email: {
+                                    emailAddress: webhook_data.new_email
+                                }
                             }
                         }
                     };
