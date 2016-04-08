@@ -144,7 +144,7 @@
         console.log(webhook_data.old_email + ' updated his email address to ' + webhook_data.new_email + '!');
         console.log('webhook_data', webhook_data);
         console.log('webhook_meta', webhook_meta);
-        capsule.personByEmail(webhook_data.email, function(err, party_data) {
+        capsule.personByEmail(webhook_data.old_email, function(err, party_data) {
             console.log('personByEmail err', err);
             if (!err) {
                 if (typeof party_data.parties.person !== 'undefined' && party_data.parties.person.id) {
