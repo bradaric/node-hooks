@@ -162,7 +162,7 @@
                     };
                     console.log('[ upemail ] update', update);
 
-                    self.request({
+                    capsule.request({
                         path: '/person/' + person_id,
                         method: 'POST',
                         data: update
