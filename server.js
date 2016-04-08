@@ -46,7 +46,7 @@
             }
 
             if (note_action) {
-                var note = { historyItem: { note: 'Contact has ' + note_action + ' mailing list "' + mailing_list.name + '"' } };
+                var note = { historyItem: { note: 'Contact has ' + note_action + ' mailing list ' + mailing_list.name + '' } };
                 capsule.addHistoryFor('party', person_id, note, function(err, history_data) {
                     console.log('addHistoryFor err', err);
                     console.log('addHistoryFor data', history_data);
@@ -116,7 +116,7 @@
             var person_id = party_data.parties.person.id;
             var mailing_list = config.mailchimp.lists[webhook_data.list_id];
 
-            var note = { historyItem: { note: 'Contact has updated the email address for mailing list "' + mailing_list.name + '"' } };
+            var note = { historyItem: { note: 'Email address updated by mailchimp from ' + webhook_data.old_email + ' to ' + webhook_data + ' on mailing list ' + mailing_list.name + '' } };
             capsule.addHistoryFor('party', person_id, note, function(err, history_data) {
                 console.log('addHistoryFor err', err);
                 console.log('addHistoryFor data', history_data);
