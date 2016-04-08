@@ -141,9 +141,34 @@
         });
     });
     webhook.on('upemail', function (webhook_data, webhook_meta) {
-        console.log(webhook_data.email + ' updated his email address!');
+        console.log(webhook_data.old_email + ' updated his email address to ' + webhook_data.new_email + '!');
         console.log('webhook_data', webhook_data);
         console.log('webhook_meta', webhook_meta);
+        capsule.personByEmail(webhook_data.email, function(err, party_data) {
+            console.log('personByEmail err', err);
+            if (!err) {
+                if (typeof party_data.parties.person !== 'undefined' && party_data.parties.person.id) {
+                    var person_id = party_data.parties.person.id;
+                    var mailing_list = config.mailchimp.lists[webhook_data.list_id];
+                    console.log('person_id', person_id);
+                    console.log('mailing_list', mailing_list);
+
+                    self.request({
+                        path: '/person/' + person_id,
+                        method: 'POST',
+                        data: {
+                            person: {
+                                email: {
+                                    emailAddress: webhook_data.new_email
+                                }
+                            }
+                        }
+                    }, function(cb) {
+                        console.log('cb', cb);
+                    });
+                }
+            }
+        });
     });
 
     webhook.on('cleaned', function (webhook_data, webhook_meta) {
