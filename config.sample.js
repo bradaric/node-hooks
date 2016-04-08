@@ -11,48 +11,23 @@ config.webhook.port = 8100;
 config.webhook.secret = '';
 config.webhook.secure = false;
 
+// lists - MailChimp list id with corresponding list name and the tag to be used in other services (see Capsule below)
 config.mailchimp.lists = {
-    '7d16b87512': {
-        name: 'Test News Alerts list',
-        tag: 'Mailchimp news alerts'
-    },
-    '3b90407bbe': {
-        name: 'Test User List',
-        tag: 'Mailchimp subscribers'
+    'a0b1c2d3e4': {
+        name: 'Mailchimp List Name',
+        tag: 'Capsule Data Tag'
     }
 };
 
+// account  - Subdomain for your Capsule account (e.g. example from https://example.capsulecrm.com)
+// token    - Your API Authentication token from My Preferences page
+// datatags - One datatag for each MailChimp list above - it should match the tag value (e.g. 'Sapsule Data Tag'). Array values should match list segments from MailChimp. Always include 'unsubscribed' & 'cleaned' at the bottom
 config.capsule.account = '';
 config.capsule.token = '';
 config.capsule.datatags = {
-    'Mailchimp news alerts': [
-        'Europe',
-        'Americas',
-        'Salmon',
-        'Latest jobs',
-        'Pelagics',
-        'Shrimp',
-        'Whitefish',
-        'Retail & foodservice',
-        'Fisheries',
-        'Tuna',
-        'Aquaculture',
-        'People moves',
-        'Breaking news',
-        'unsubscribed',
-        'cleaned'
-    ],
-    'Mailchimp subscribers': [
-        'Premium users',
-        'Standard users',
-        'Annual users',
-        'Monthly users',
-        'Group users',
-        'Free users',
-        'Brussels',
-        'Boston',
-        'Conxemar',
-        'Karen\'s list',
+    'Capsule Data Tag': [
+        'List Segment 1',
+        'List Segment 2',
         'unsubscribed',
         'cleaned'
     ]
