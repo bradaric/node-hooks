@@ -116,7 +116,7 @@
             var person_id = party_data.parties.person.id;
             var mailing_list = config.mailchimp.lists[webhook_data.list_id];
 
-            var note = { historyItem: { note: 'Email address updated by mailchimp from ' + webhook_data.old_email + ' to ' + webhook_data + ' on mailing list ' + mailing_list.name + '' } };
+            var note = { historyItem: { note: 'Email address updated by mailchimp from ' + webhook_data.old_email + ' to ' + webhook_data.new_email + ' on mailing list ' + mailing_list.name + '' } };
             capsule.addHistoryFor('party', person_id, note, function(err, history_data) {
                 console.log('addHistoryFor err', err);
                 console.log('addHistoryFor data', history_data);
