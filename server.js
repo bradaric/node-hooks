@@ -108,6 +108,29 @@
         return fields;
     };
 
+    var _addPartyEmailAddress = function(party_data, webhook_data) {
+        console.log('party_data', party_data);
+        console.log('webhook_data', webhook_data);
+
+        if (typeof party_data.parties.person !== 'undefined' && party_data.parties.person.id) {
+            var person_id = party_data.parties.person.id;
+            var mailing_list = config.mailchimp.lists[webhook_data.list_id];
+
+            var note = { historyItem: { note: 'Contact has updated the email address for mailing list "' + mailing_list.name + '"' } };
+            capsule.addHistoryFor('party', person_id, note, function(err, history_data) {
+                console.log('addHistoryFor err', err);
+                console.log('addHistoryFor data', history_data);
+            });
+
+            capsule.addEmailFor('person', person_id, webhook_data.new_email, function(err, email_data) {
+                console.log('addEmailFor err', err);
+                console.log('addEmailFor data', email_data);
+            });
+        }
+    };
+
+
+
     webhook.on('error', function (error) {
         console.log('error', error);
     });
@@ -145,33 +168,8 @@
         console.log('[ upemail ] webhook_data', webhook_data);
         console.log('[ upemail ] webhook_meta', webhook_meta);
         capsule.personByEmail(webhook_data.old_email, function(err, party_data) {
-            console.log('[ upemail ] personByEmail err', err);
             if (!err) {
-                console.log('[ upemail ] personByEmail party_data', party_data);
-                if (typeof party_data.parties.person !== 'undefined' && party_data.parties.person.id) {
-                    var person_id = party_data.parties.person.id;
-                    console.log('[ upemail ] person_id', person_id);
-                    var mailing_list = config.mailchimp.lists[webhook_data.list_id];
-                    console.log('[ upemail ] mailing_list', mailing_list);
-                    var update = {
-                        person: {
-                            contacts: {
-                                email: {
-                                    emailAddress: webhook_data.new_email
-                                }
-                            }
-                        }
-                    };
-                    console.log('[ upemail ] update', update);
-
-                    capsule.request({
-                        path: '/person/' + person_id,
-                        method: 'POST',
-                        data: update
-                    }, function(cb) {
-                        console.log('[ upemail ] cb', cb);
-                    });
-                }
+                _addPartyEmailAddress(party_data, webhook_data);
             }
         });
     });
