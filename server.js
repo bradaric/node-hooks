@@ -16,7 +16,6 @@
         console.log('type', type);
         console.log('party_data', party_data);
         console.log('webhook_data', webhook_data);
-        console.log('GROUPINGS', webhook_data.merges.GROUPINGS);
 
         if (typeof party_data.parties.person !== 'undefined' && party_data.parties.person.id) {
             var person_id = party_data.parties.person.id;
@@ -38,6 +37,13 @@
                     segments = [ 'unsubscribed' ];
                     break;
                 case 'cleaned':
+                    if (webhook_data.reason == 'hard') {
+                        var hard_note = { historyItem: { note: 'Cannot deliver to email address ' + webhook_data.email + ' for mailing list ' + mailing_list.name + '' } };
+                        capsule.addHistoryFor('party', person_id, hard_note, function(err, history_data) {
+                            console.log('addHistoryFor err', err);
+                            console.log('addHistoryFor data', history_data);
+                        });
+                    }
                     note_action = 'been cleaned from';
                     segments = [ 'cleaned' ];
                     break;
@@ -72,6 +78,7 @@
     var _extractSegments = function(data) {
         var segments = [];
         if (typeof data.merges !== 'undefined' && data.merges.GROUPINGS) {
+            console.log('GROUPINGS', webhook_data.merges.GROUPINGS);
             data.merges.GROUPINGS.forEach(function(grouping) {
                 console.log('grouping', grouping);
                 if (grouping.groups) {
