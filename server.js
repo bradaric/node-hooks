@@ -4,7 +4,7 @@
     var MailChimpWebhook = require('mailchimp').MailChimpWebhook;
     var CapsuleCRM = require('capsule-crm');
 
-    var config = require('./config');
+    var config = require('config.js');
 
     var webhook = new MailChimpWebhook(config.webhook);
     var capsule = CapsuleCRM.createConnection(config.capsule.account, config.capsule.token);
