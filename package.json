@@ -1,6 +1,6 @@
 {
     "name" : "node-hooks",
-    "version" : "0.0.3",
+    "version" : "0.0.4",
     "description" : "A node.js webhooks server.",
     "author" : "Alex Bradaric <alex@bradaric.com>",
     "keywords" : ["webhooks", "mailchimp", "capsule", "capsulecrm"],
@@ -16,6 +16,7 @@
         }
     ],
     "dependencies": {
+        "config": "~1.20",
         "mailchimp": "bradaric/node-mailchimp",
         "capsule-crm": "bradaric/capsule-crm",
         "aws-sdk": "~2.2"

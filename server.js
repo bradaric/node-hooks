@@ -3,13 +3,16 @@
 
     var MailChimpWebhook = require('mailchimp').MailChimpWebhook;
     var CapsuleCRM = require('capsule-crm');
+    var Config = require('config');
 
-    var config = require('config.js');
+    var config_webhook = Config.get('webhook');
+    var config_mailchimp = Config.get('mailchimp');
+    var config_capsule = Config.get('capsule');
 
-    var webhook = new MailChimpWebhook(config.webhook);
-    var capsule = CapsuleCRM.createConnection(config.capsule.account, config.capsule.token);
+    var webhook = new MailChimpWebhook(config_webhook);
+    var capsule = CapsuleCRM.createConnection(config_capsule.account, config_capsule.token);
 
-    console.log('UCN Hooks server listening on port ' + config.webhook.port + '...');
+    console.log('UCN Hooks server listening on port ' + config_webhook.port + '...');
 
 
     var _syncPartyDataTags = function(type, party_data, webhook_data) {
@@ -19,7 +22,7 @@
 
         if (typeof party_data.parties.person !== 'undefined' && party_data.parties.person.id) {
             var person_id = party_data.parties.person.id;
-            var mailing_list = config.mailchimp.lists[webhook_data.list_id];
+            var mailing_list = config_mailchimp.lists[webhook_data.list_id];
 
             var note_action = '';
             var segments = [];
@@ -60,7 +63,7 @@
             }
 
             var tag_name = mailing_list.tag;
-            if (tag_name && config.capsule.datatags[tag_name]) {
+            if (tag_name && config_capsule.datatags[tag_name]) {
                 var tags = { customFields: { customField: _segmentsToFields(segments, tag_name) } };
                 console.log('tags', tags);
                 capsule.setCustomFieldFor('party', person_id, tags, function(err, custom_field_data) {
@@ -95,7 +98,7 @@
 
     var _segmentsToFields = function(segments, tag_name) {
         var fields = [];
-        config.capsule.datatags[tag_name].forEach(function(tag_label) {
+        config_capsule.datatags[tag_name].forEach(function(tag_label) {
             var field = {
                 tag: tag_name,
                 label: tag_label
@@ -121,7 +124,7 @@
 
         if (typeof party_data.parties.person !== 'undefined' && party_data.parties.person.id) {
             var person_id = party_data.parties.person.id;
-            var mailing_list = config.mailchimp.lists[webhook_data.list_id];
+            var mailing_list = config_mailchimp.lists[webhook_data.list_id];
 
             var note = { historyItem: { note: 'Email address updated by mailchimp from ' + webhook_data.old_email + ' to ' + webhook_data.new_email + ' on mailing list ' + mailing_list.name + '' } };
             capsule.addHistoryFor('party', person_id, note, function(err, history_data) {

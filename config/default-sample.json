@@ -1,0 +1,27 @@
+{
+    "webhook" : {
+        "port" : 8100,
+        "secret" : "",
+        "secure" : false
+    },
+    "mailchimp" : {
+        "lists" : {
+            "a0b1c2d3e4" : {
+                "name" : "MailChimp List name",
+                "tag" : "Capsule Data Tag"
+            }
+        }
+    },
+    "capsule" : {
+        "account" : "",
+        "token" : "",
+        "datatags" : {
+            "Capsule Data Tag": [
+                "List Segment 1",
+                "List Segment 2",
+                "unsubscribed",
+                "cleaned"
+            ]
+        }
+    }
+}
