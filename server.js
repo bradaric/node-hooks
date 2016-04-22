@@ -9,7 +9,7 @@ var config_capsule = Config.get('capsule');
 var webhook = new MailChimpWebhook(config_webhook);
 var capsule = CapsuleCRM.createConnection(config_capsule.account, config_capsule.token);
 
-console.log('UCN Hooks server listening on port ' + config_webhook.port + '...');
+// console.log('UCN Hooks server listening on port ' + config_webhook.port + '...');
 
 
 var _syncPartyDataTags = function(type, party_data, webhook_data) {
@@ -78,7 +78,7 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
 var _extractSegments = function(data) {
     var segments = [];
     if (typeof data.merges !== 'undefined' && data.merges.GROUPINGS) {
-        console.log('GROUPINGS', webhook_data.merges.GROUPINGS);
+        console.log('GROUPINGS', data.merges.GROUPINGS);
         data.merges.GROUPINGS.forEach(function(grouping) {
             console.log('grouping', grouping);
             if (grouping.groups) {
