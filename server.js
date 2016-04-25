@@ -37,7 +37,7 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
                 segments = [ 'unsubscribed' ];
                 break;
             case 'cleaned':
-                if (webhook_data.reason == 'hard') {
+                if (webhook_data.reason == 'hard' && (typeof webhook_data.skip_note == 'undefined' || webhook_data.skip_note != 'true')) {
                     var hard_note = { historyItem: { note: 'Cannot deliver to email address ' + webhook_data.email + ' for mailing list ' + mailing_list.name + '' } };
                     capsule.addHistoryFor('party', person_id, hard_note, function(err, history_data) {
                         console.log('addHistoryFor err', err);
@@ -51,7 +51,7 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
                 break;
         }
 
-        if (note_action) {
+        if (note_action && (typeof webhook_data.skip_note == 'undefined' || webhook_data.skip_note != 'true')) {
             var note = { historyItem: { note: 'Contact has ' + note_action + ' mailing list ' + mailing_list.name + '' } };
             capsule.addHistoryFor('party', person_id, note, function(err, history_data) {
                 console.log('addHistoryFor err', err);

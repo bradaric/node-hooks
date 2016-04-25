@@ -1,6 +1,6 @@
 {
     "name" : "node-hooks",
-    "version" : "0.0.7",
+    "version" : "0.0.8",
     "description" : "A node.js webhooks server.",
     "author" : "Alex Bradaric <alex@bradaric.com>",
     "keywords" : ["webhooks", "mailchimp", "capsule", "capsulecrm"],
