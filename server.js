@@ -143,6 +143,7 @@ webhook.on('error', function (error) {
 });
 
 webhook.on('subscribe', function (webhook_data, webhook_meta) {
+    console.log(webhook_data, webhook_meta);
     console.log(webhook_data.email + ' subscribed to your newsletter!');
     capsule.personByEmail(webhook_data.email, function(err, party_data) {
         console.log('personByEmail err', err);
