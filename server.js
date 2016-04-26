@@ -63,12 +63,14 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
         if (tag_name && config_capsule.datatags[tag_name]) {
             var tags = { customFields: { customField: _segmentsToFields(segments, tag_name) } };
             console.log('tags', tags);
-            capsule.setCustomFieldFor('party', person_id, tags, function(err, custom_field_data) {
+            capsule.setCustomFieldFor('party', person_id, tags, function(err, custom_field_data, res) {
                 console.log('setCustomFieldFor err', err);
                 console.log('setCustomFieldFor data', custom_field_data);
-                capsule.setPartyTag(person_id, tag_name, function(err, party_tag_data) {
+                console.log('setCustomFieldFor res', res);
+                capsule.setPartyTag(person_id, tag_name, function(err, party_tag_data, res) {
                     console.log('setPartyTag err', err);
                     console.log('setPartyTag data', party_tag_data);
+                    console.log('setPartyTag res', res);
                 });
             });
         }
