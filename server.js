@@ -39,9 +39,11 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
             case 'cleaned':
                 if (webhook_data.reason == 'hard' && (typeof webhook_data.skip_note == 'undefined' || webhook_data.skip_note != 'true')) {
                     var hard_note = { historyItem: { note: 'Cannot deliver to email address ' + webhook_data.email + ' for mailing list ' + mailing_list.name + '' } };
-                    capsule.addHistoryFor('party', person_id, hard_note, function(err, history_data) {
+                    capsule.addHistoryFor('party', person_id, hard_note, function(err, history_data, res) {
                         console.log('addHistoryFor err', err);
                         console.log('addHistoryFor data', history_data);
+                        console.log('addHistoryFor x-ratelimit-remaining', res.headers['x-ratelimit-remaining']);
+                        console.log('addHistoryFor x-ratelimit-reset', res.headers['x-ratelimit-reset']);
                     });
                 }
                 note_action = 'been cleaned from';
@@ -53,9 +55,11 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
 
         if (note_action && (typeof webhook_data.skip_note == 'undefined' || webhook_data.skip_note != 'true')) {
             var note = { historyItem: { note: 'Contact has ' + note_action + ' mailing list ' + mailing_list.name + '' } };
-            capsule.addHistoryFor('party', person_id, note, function(err, history_data) {
+            capsule.addHistoryFor('party', person_id, note, function(err, history_data, res) {
                 console.log('addHistoryFor err', err);
                 console.log('addHistoryFor data', history_data);
+                console.log('addHistoryFor x-ratelimit-remaining', res.headers['x-ratelimit-remaining']);
+                console.log('addHistoryFor x-ratelimit-reset', res.headers['x-ratelimit-reset']);
             });
         }
 
@@ -66,11 +70,13 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
             capsule.setCustomFieldFor('party', person_id, tags, function(err, custom_field_data, res) {
                 console.log('setCustomFieldFor err', err);
                 console.log('setCustomFieldFor data', custom_field_data);
-                console.log('setCustomFieldFor res', res);
+                console.log('setCustomFieldFor x-ratelimit-remaining', res.headers['x-ratelimit-remaining']);
+                console.log('setCustomFieldFor x-ratelimit-reset', res.headers['x-ratelimit-reset']);
                 capsule.setPartyTag(person_id, tag_name, function(err, party_tag_data, res) {
                     console.log('setPartyTag err', err);
                     console.log('setPartyTag data', party_tag_data);
-                    console.log('setPartyTag res', res);
+                    console.log('setPartyTag x-ratelimit-remaining', res.headers['x-ratelimit-remaining']);
+                    console.log('setPartyTag x-ratelimit-reset', res.headers['x-ratelimit-reset']);
                 });
             });
         }
@@ -126,14 +132,18 @@ var _addPartyEmailAddress = function(party_data, webhook_data) {
         var mailing_list = config_mailchimp.lists[webhook_data.list_id];
 
         var note = { historyItem: { note: 'Email address updated by mailchimp from ' + webhook_data.old_email + ' to ' + webhook_data.new_email + ' on mailing list ' + mailing_list.name + '' } };
-        capsule.addHistoryFor('party', person_id, note, function(err, history_data) {
+        capsule.addHistoryFor('party', person_id, note, function(err, history_data, res) {
             console.log('addHistoryFor err', err);
             console.log('addHistoryFor data', history_data);
+            console.log('addHistoryFor x-ratelimit-remaining', res.headers['x-ratelimit-remaining']);
+            console.log('addHistoryFor x-ratelimit-reset', res.headers['x-ratelimit-reset']);
         });
 
-        capsule.addEmailFor('person', person_id, webhook_data.new_email, function(err, email_data) {
+        capsule.addEmailFor('person', person_id, webhook_data.new_email, function(err, email_data, res) {
             console.log('addEmailFor err', err);
             console.log('addEmailFor data', email_data);
+            console.log('addEmailFor x-ratelimit-remaining', res.headers['x-ratelimit-remaining']);
+            console.log('addEmailFor x-ratelimit-reset', res.headers['x-ratelimit-reset']);
         });
     }
 };
