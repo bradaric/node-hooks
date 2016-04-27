@@ -26,10 +26,13 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
             skip_note = true;
         }
         else {
+            console.log('mailing_list.skip_note', mailing_list.skip_note);
+            console.log('mailing_list.skip_note.indexOf(' + type + ')', mailing_list.skip_note.indexOf(type));
             if (typeof mailing_list.skip_note !== 'undefined' && typeof mailing_list.skip_note.indexOf(type) >= 0) {
                 skip_note = true;
             }
         }
+        console.log('skip_note', skip_note);
 
         var note_action = '';
         var segments = [];
