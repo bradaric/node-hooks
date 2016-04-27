@@ -28,7 +28,7 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
         else {
             console.log('mailing_list.skip_note', mailing_list.skip_note);
             console.log('mailing_list.skip_note.indexOf(' + type + ')', mailing_list.skip_note.indexOf(type));
-            if (typeof mailing_list.skip_note !== 'undefined' && typeof mailing_list.skip_note.indexOf(type) >= 0) {
+            if (typeof mailing_list.skip_note !== 'undefined' && mailing_list.skip_note.indexOf(type) >= 0) {
                 skip_note = true;
             }
         }
