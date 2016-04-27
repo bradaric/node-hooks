@@ -21,6 +21,16 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
         var person_id = party_data.parties.person.id;
         var mailing_list = config_mailchimp.lists[webhook_data.list_id];
 
+        var skip_note = false;
+        if (typeof webhook_data.skip_note !== 'undefined' && webhook_data.skip_note === 'true') {
+            skip_note = true;
+        }
+        else {
+            if (typeof mailing_list.skip_note !== 'undefined' && typeof mailing_list.skip_note.indexOf(type) >= 0) {
+                skip_note = true;
+            }
+        }
+
         var note_action = '';
         var segments = [];
         switch (type) {
@@ -37,7 +47,7 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
                 segments = [ 'unsubscribed' ];
                 break;
             case 'cleaned':
-                if (webhook_data.reason == 'hard' && (typeof webhook_data.skip_note == 'undefined' || webhook_data.skip_note != 'true')) {
+                if (webhook_data.reason == 'hard' && !skip_note) {
                     var hard_note = { historyItem: { note: 'Cannot deliver to email address ' + webhook_data.email + ' for mailing list ' + mailing_list.name + '' } };
                     capsule.addHistoryFor('party', person_id, hard_note, function(err, history_data, res) {
                         console.log('addHistoryFor err', err);
@@ -53,7 +63,7 @@ var _syncPartyDataTags = function(type, party_data, webhook_data) {
                 break;
         }
 
-        if (note_action && (typeof webhook_data.skip_note == 'undefined' || webhook_data.skip_note != 'true')) {
+        if (note_action && !skip_note) {
             var note = { historyItem: { note: 'Contact has ' + note_action + ' mailing list ' + mailing_list.name + '' } };
             capsule.addHistoryFor('party', person_id, note, function(err, history_data, res) {
                 console.log('addHistoryFor err', err);
@@ -131,13 +141,25 @@ var _addPartyEmailAddress = function(party_data, webhook_data) {
         var person_id = party_data.parties.person.id;
         var mailing_list = config_mailchimp.lists[webhook_data.list_id];
 
-        var note = { historyItem: { note: 'Email address updated by mailchimp from ' + webhook_data.old_email + ' to ' + webhook_data.new_email + ' on mailing list ' + mailing_list.name + '' } };
-        capsule.addHistoryFor('party', person_id, note, function(err, history_data, res) {
-            console.log('addHistoryFor err', err);
-            console.log('addHistoryFor data', history_data);
-            console.log('addHistoryFor x-ratelimit-remaining', res.headers['x-ratelimit-remaining']);
-            console.log('addHistoryFor x-ratelimit-reset', res.headers['x-ratelimit-reset']);
-        });
+        var skip_note = false;
+        if (typeof webhook_data.skip_note !== 'undefined' && webhook_data.skip_note === 'true') {
+            skip_note = true;
+        }
+        else {
+            if (typeof mailing_list.skip_note !== 'undefined' && typeof mailing_list.skip_note.indexOf(type) >= 0) {
+                skip_note = true;
+            }
+        }
+
+        if (!skip_note) {
+            var note = { historyItem: { note: 'Email address updated by mailchimp from ' + webhook_data.old_email + ' to ' + webhook_data.new_email + ' on mailing list ' + mailing_list.name + '' } };
+            capsule.addHistoryFor('party', person_id, note, function(err, history_data, res) {
+                console.log('addHistoryFor err', err);
+                console.log('addHistoryFor data', history_data);
+                console.log('addHistoryFor x-ratelimit-remaining', res.headers['x-ratelimit-remaining']);
+                console.log('addHistoryFor x-ratelimit-reset', res.headers['x-ratelimit-reset']);
+            });
+        }
 
         capsule.addEmailFor('person', person_id, webhook_data.new_email, function(err, email_data, res) {
             console.log('addEmailFor err', err);

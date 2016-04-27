@@ -8,7 +8,8 @@
         "lists" : {
             "a0b1c2d3e4" : {
                 "name" : "MailChimp List name",
-                "tag" : "Capsule Data Tag"
+                "tag" : "Capsule Data Tag",
+                "skip_note" : [ "subscribe" ]
             }
         }
     },
