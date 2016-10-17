@@ -149,7 +149,7 @@ var _addPartyEmailAddress = function(party_data, webhook_data) {
             skip_note = true;
         }
         else {
-            if (typeof mailing_list.skip_note !== 'undefined' && typeof mailing_list.skip_note.indexOf(type) >= 0) {
+            if (typeof mailing_list.skip_note !== 'undefined' && (mailing_list.skip_note === 'all' || mailing_list.skip_note.indexOf(type) >= 0)) {
                 skip_note = true;
             }
         }
