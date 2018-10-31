@@ -229,7 +229,7 @@ webhook.on('cleaned', function (webhook_data, webhook_meta) {
 });
 
 webhook.on('campaign', function (webhook_data, webhook_meta) {
-    console.log('status of campaign \'' + data.subject + '\' has been changed!');
+    console.log('status of campaign \'' + webhook_data.subject + '\' has been changed!');
     console.log('webhook_data', webhook_data);
     console.log('webhook_meta', webhook_meta);
 });
